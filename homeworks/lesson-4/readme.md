@@ -4,7 +4,7 @@
 
 [https://hub.docker.com/repository/docker/4l3xb0l0t08/my-nginx-image/general](https://hub.docker.com/repository/docker/4l3xb0l0t08/my-nginx-image/general)
 
-### Завантаження зібраних образів 0.1 та 0.2 з DockerHub
+### Завантаження та перевірка зібраних образів 0.1 та 0.2 з DockerHub
 
 #### Покроково
 
