@@ -1,0 +1,37 @@
+Завантажити на сервер файл з командами використаними для створення контейнерів з різними типами мережі
+
+1. Створюємо контейнер з типом мережі Bridge
+2. Створюємо контейнер з типом мережі Host
+3. Створюємо контейнер з типом мережі None
+4. Створюємо контейнери з типом мережі Macvlan
+
+1.Створюємо контейнер з типом мережі Bridge
+	Команда:
+		sudo docker run -d --name bridge_container busybox sleep 3600
+
+2. Створюємо контейнер з типом мережі Host
+	Команда:
+		sudo docker run -d --name host_container --network host nginx
+
+3.Створюємо контейнер з типом мережі None
+	Команда:
+		sudo docker run -d --network none --name none_container busybox sleep 3600
+
+4.Створюємо контейнери з типом мережі Macvlan
+	Звичайний Macvlan
+	Команда:
+		sudo docker run -d --name macvlan_container --network macvlan_network busybox sleep 3600
+	
+	З підтримкою DHCP
+	Команда:
+		sudo docker run -d --name macvlan_dhcp --network macvlan_network busybox udhcpc -i enp0s3
+	
+	З статичним ip
+	Команда:
+		sudo docker run -d --name macvlan_container --network macvlan_network --ip 192.168.1.100 busybox sleep 3600
+
+------------------------------------------------------------------------------------------------------
+Домашнє завдання до уроку 5: 
+Завантажити на сервер файл з командами використаними для створення контейнерів з різними типами мережі
+Студент: Олександр Болотов
+Дата виконання завдання: 17.02.2025 

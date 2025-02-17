@@ -1,0 +1,85 @@
+Завантажити на сервер файл з командами використаними для створення файлу в одному з контейнерів та демонстрації його вмісту на другому контейнері
+
+Створимо 2 контейнери налаштовані на використання суміжного Docker Volume
+
+Спочатку перевірмо чи є в нас якісь  volume
+
+Команда:
+	sudo docker volume ls
+Відгук:
+DRIVER    VOLUME NAME
+
+Ніяких volume зараз у нас немає
+
+Створюємо два контейнери для вправи
+
+Команда:
+	sudo docker run -d --name volume_container1 -v my_volume:/data busybox sleep 3600
+Відгук:
+97ee0b5ab839a36c5a6614994d70496f432f8f067d2034f61a7cab1e288c98bf
+
+Команда:
+	sudo docker run -d --name volume_container2 -v my_volume:/data busybox sleep 3600
+Відгук:
+f6f7a6905f56eb75d2c9522445f0779e80d6b2d218fccddc6eb4c0735b30acf3
+
+Контейнери створені, перевірмо тепер наявність volume
+
+Команда:
+	sudo docker volume ls
+Відгук:
+DRIVER    VOLUME NAME
+local     my_volume
+
+З’явився новий volume my_volume. Відмітимо, шо контейнера було створено два, але їм ми вказали використовувати один і той самий volume - my_volume
+
+Тепер створимо файл на my_volume з контейнера  volume_container1
+
+Команда:
+	sudo docker exec -it volume_container1 sh
+Відгук:
+	/ #
+	*** далі суто команди ***
+	/ # cd /data
+	/data # touch testfile
+	/data # ls
+	testfile
+	/data # exit
+
+Ми створили файл у теці data і перевірили шо він там є
+Тепер повторимо все те саме для контейнера volume_container2 Додатково перевіримо, чи бачимо ми файл створений у контейнері volume_container1
+
+Команда:
+	sudo docker exec -it volume_container2 sh
+Відгук:
+	/ #
+	*** далі суто команди ***
+	/ # cd /data
+	/data # ls
+	testfile
+	/data # touch testfile2
+	/data # ls
+	testfile   testfile2
+	/data # exit
+
+Побачили файл зроблений на контейнері volume_container1, додали свій, впевнилися шо бачимо обидва файли і вийшли
+
+Тепер перевірмо, чи бачимо ми створений на volume_container2 файл
+
+Команда:
+	sudo docker exec -it volume_container1 sh
+Відгук:
+	/ #
+	*** далі суто команди ***
+	/ # cd /data
+	/data # ls
+	testfile   testfile2
+	/data # exit
+
+Бачимо обидва файли, вправу закінчено
+
+--------------------------------------------------------
+Домашнє завдання до уроку 5: 
+Завантажити на сервер файл з командами використаними для створення файлу в одному з контейнерів та демонстрації його вмісту на другому контейнері
+Студент: Олександр Болотов
+Дата виконання завдання: 17.02.2025 
