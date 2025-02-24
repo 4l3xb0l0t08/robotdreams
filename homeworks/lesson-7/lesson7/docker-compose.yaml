@@ -12,7 +12,7 @@
 #	   Файл .env
 #
 # Всі теки і файли додани до ДЗ і знаходяться в директорії цього ДЗ на GitHub
-#
+# У назві файлу env який завантажений на GitHub треба додати крапку з початку, шоб він мав вигляд .env
 
 #Директива version визначає версію синтаксису Docker Compose
 version: '3.8'
@@ -86,6 +86,7 @@ services:
     ports:
       - "3000:3000"
 #Директива environment задає змінні середовища для контейнера
+#У назві файлу env який завантажений на GitHub треба додати крапку з початку, шоб він мав вигляд .env
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
       - GF_DASHBOARD_DEFAULT_HOME_DASHBOARD_PATH=${GF_DASHBOARD_DEFAULT_HOME_DASHBOARD_PATH}
