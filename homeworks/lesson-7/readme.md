@@ -2,8 +2,8 @@
 
 ### Перелік файлів
 
-    HomeWork7.pdf - Все завдання цілком у форматі pdf
-    HomeWork7.txt - Все завдання цілком у форматі txt
-    lesson7 - Тека яка містить кінцеве рішення по ДЗ
-    lesson7/docker-compose.yaml - Файл docker-compose.yaml який згідно ДЗ треба надати
-    readme.md - Цей файл, шо містить опис вмісту теки
+HomeWork7.pdf - Все завдання цілком у форматі pdf
+HomeWork7.txt - Все завдання цілком у форматі txt
+lesson7 - Тека яка містить кінцеве рішення по ДЗ
+lesson7/docker-compose.yaml - Файл docker-compose.yaml який згідно ДЗ треба надати
+readme.md - Цей файл, шо містить опис вмісту теки
