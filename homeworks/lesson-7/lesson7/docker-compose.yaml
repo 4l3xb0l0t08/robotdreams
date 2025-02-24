@@ -1,0 +1,100 @@
+# Умови при виконанні яких цей файл спрацює
+# Мають бути створені і розташовані, у певному порядку, з певними назвами і вмістом, ці теки і файли:
+#
+#	Тека lesson7 (або інша назва)
+#	   Тека grafana
+#	      Тека provisioning
+#	         Файл datasources.yaml
+#	   Тека fluentd-loki
+#	      Файл Dockerfile
+#	      Файл fluentd.conf
+#	   Файл docker-compose.yaml
+#	   Файл .env
+#
+# Всі теки і файли додани до ДЗ і знаходяться в директорії цього ДЗ на GitHub
+#
+
+#Директива version визначає версію синтаксису Docker Compose
+version: '3.8'
+#Ця директива викликає попередження, тому може бути закоментована, на обробку файла це не впливає, перевірено
+
+# Ця секція описує контейнери (сервіси), їх налаштування і залежності. У нас це будуть -  loki, fluentd-loki, log_container_fluentd та grafana
+services:
+# Назва сервісу
+  loki:
+#Директива image вказує образ, який буде використовуватися для створення контейнера
+    image: grafana/loki:latest
+#Директива ports визначає порти, які мають бути відкриті і перенаправлені з хост-машини на контейнер
+    ports:
+      - "3100:3100"
+#Директива networks підключає сервіс до вказаної мережі або мереж
+    networks:
+      - bridge_network
+
+#Назва сервісу
+  fluentd-loki:
+#Директива build використовується для вказівки шляху до Dockerfile, який має бути використаний для збірки образу. В нашому випадку це тека fluentd-loki у кореневій теці ДЗ
+    build:
+#Вказуємо теку
+      context: ./fluentd-loki
+#Вказуємо назву файлу
+      dockerfile: Dockerfile
+#Вказуємо порти на яких працюватиме сервіс
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+#Директива volumes монтує томи в контейнери, що дозволяє зберігати дані між перезапусками контейнерів
+    volumes:
+      - ./fluentd-loki/fluentd.conf:/fluentd/etc/fluent.conf:ro
+#Підключаємо до вказаної мережі    
+    networks:
+      - bridge_network
+#Директива depends_on вказує, що цей сервіс залежить від інших сервісів і має бути запущений після них. В нашому випадку цей сервіс чекає коли буде запущено після сервісу loki
+    depends_on: 
+      - loki
+      
+#Назва сервісу
+  log_container_fluentd:
+    image: busybox
+#Директива command дозволяє перевизначити команду, яка буде виконана при запуску контейнера
+    command: "sh -c 'while true; do echo \"Fluentd test log: $(date)\"; sleep 2; done'"
+    networks:
+      - bridge_network
+#Директива logging яка визначає який драйвер логування треба використовувати
+    logging:
+#Драйвер логування, тут ми використовуємо fluentd
+      driver: fluentd
+#Встановлюємо параметри драйвера за допомогою параметрів які виглядають як пари ключ-значення
+      options:
+        fluentd-address: localhost:24224
+        tag: log_container_fluentd.logs
+#Запускаємо після fluentd-loki
+    depends_on:
+      - fluentd-loki
+
+#Назва сервісу
+  grafana:
+#Образ шо використовуємо
+    image: grafana/grafana
+#Монтуємо том в контейнер
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+#Використовуємо цю мережу    
+    networks:
+      - bridge_network
+#Використовуємо ці порти
+    ports:
+      - "3000:3000"
+#Директива environment задає змінні середовища для контейнера
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_DASHBOARD_DEFAULT_HOME_DASHBOARD_PATH=${GF_DASHBOARD_DEFAULT_HOME_DASHBOARD_PATH}
+      - GF_SERVER_ROOT_URL=${GF_SERVER_ROOT_URL}
+#Запускаємо після loki
+    depends_on:
+      - loki
+
+#Розділ networks дозволяє визначити користувацькі мережі, в яких працюватимуть контейнери
+networks:
+  bridge_network:
+    driver: bridge
