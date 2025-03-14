@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bb-deployment
+  namespace: bb-namespace
+spec:  
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bb-app
+  template:
+    metadata:
+      labels:
+        app: bb-app
+    spec:
+      volumes:
+      - name: bb-pvc
+        persistentVolumeClaim:
+          claimName: bb-pvc
+      containers:
+      - name: busybox
+        image: busybox:1.28
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        envFrom:
+          - configMapRef:
+              name: bb-config
+        command:
+          - "/bin/sh"
+          - "-c"
+          - 'while true; do echo "$(hostname) : $(date)"; echo "$(hostname) : $(date)" >> "/mnt/data/busybox/$(MSGFILE)"; sleep 5; done'
+        volumeMounts:
+        - mountPath: /mnt/data/busybox
+          name: bb-pvc
