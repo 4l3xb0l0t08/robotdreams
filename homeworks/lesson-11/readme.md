@@ -36,7 +36,7 @@
 ### Файл bb-deployment з коментарями для кожної директиви
 Орігінальний файл не містить коментарів, шоб раптом не зрушити форматування
 
-apiVersion: apps/v1 #API-версія Kubernetes
+_apiVersion: apps/v1 #API-версія Kubernetes
 kind: Deployment #Тип ресурсу Deployment
 metadata: #Містить метаінформацію про Deployment
   name: bb-deployment #Ім'я, має бути унікальним
@@ -77,3 +77,4 @@ spec:  #Основний розділ конфігурації
         volumeMounts: #Точки монтування томів
         - mountPath: /mnt/data/busybox #Монтуемо цей каталог на хостовому комп'ютері до volume з цім bb-pvc ім'ям 
           name: bb-pvc #Ім'я volume який монтується до вишче вказаного каталогу
+_
