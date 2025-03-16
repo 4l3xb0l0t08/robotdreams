@@ -33,7 +33,7 @@
 29. node-exporter.yaml - файл деплойменту (DaemonSet) для налаштування node-exporter у Prometheus
 30. readme.md - Цей файл, шо містить опис вмісту теки
 
-### Файл bb-deployment з коментарями для кожної директиви
+#### Файл bb-deployment з коментарями для кожної директиви
 Орігінальний файл не містить коментарів, шоб раптом не зрушити форматування
 
 	apiVersion: apps/v1 #API-версія Kubernetes
