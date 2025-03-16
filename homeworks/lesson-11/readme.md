@@ -36,10 +36,10 @@
 ### Файл bb-deployment з коментарями для кожної директиви
 Орігінальний файл не містить коментарів, шоб раптом не зрушити форматування
 
-apiVersion: apps/v1 #API-версія Kubernetes.
-kind: Deployment #Тип ресурсу Deployment.
-metadata: #Містить метаінформацію про Deployment.
-  name: bb-deployment #Ім'я, має бути унікальним.
+apiVersion: apps/v1 #API-версія Kubernetes  
+kind: Deployment #Тип ресурсу Deployment  
+metadata: #Містить метаінформацію про Deployment  
+  name: bb-deployment #Ім'я, має бути унікальним  
   namespace: bb-namespace #Унікальна назва простору імен у кластері. Використовують для логічного розділення ресурсів Kubernetes
 spec:  #Основний розділ конфігурації
   replicas: 3 #Кількість контейнерів, які повинні запуститися
